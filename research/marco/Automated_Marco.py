@@ -65,7 +65,6 @@ with open(PATH +'results.csv', 'w') as csvfile:
     # Write the header row for easier reading later
     Writer.writerow(['Image path','Prediction', 'Crystal', 'Other', 'Precipitate:', 'Clear'])
 
-
     predicter= tf.contrib.predictor.from_saved_model(model_path)
     dic = {}
 
