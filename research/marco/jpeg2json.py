@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ==============================================================================
+
+# file =(sys.argv[1]) if len(sys.argv) > 1 else sys.stdin
+# with open(file, 'rb') as f: print(to_json(f.read()))
 """jpeg2json.py: Converts a JPEG image into a json request to CloudML.
 
 Usage:

@@ -6,3 +6,6 @@
 
 #ignore csv
 *.csv
+
+#ignore json
+*.json
