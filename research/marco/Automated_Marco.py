@@ -14,6 +14,7 @@
 # limitations under the License.
 # ==============================================================================
 import tensorflow as tf
+import operator
 import csv
 import os
 import sys
@@ -46,11 +47,8 @@ def get_images():
     return files
 
 crystal_images = get_images()
-print(crystal_images)
-print(type(crystal_images))
-
 size = len(crystal_images)
-print(str(size) + " this many images")
+
 
 def load_images(file_list):
     for i in file_list:
@@ -65,7 +63,7 @@ with open(PATH +'results.csv', 'w') as csvfile:
     Writer = csv.writer(csvfile, delimiter=',',quotechar=' ', quoting=csv.QUOTE_MINIMAL)
 
     # Write the header row for easier reading later
-    Writer.writerow(['Image path', 'Crystal', 'Other', 'Precipitate:', 'Clear'])
+    Writer.writerow(['Image path','Prediction', 'Crystal', 'Other', 'Precipitate:', 'Clear'])
 
 
     predicter= tf.contrib.predictor.from_saved_model(model_path)
@@ -82,6 +80,7 @@ with open(PATH +'results.csv', 'w') as csvfile:
                 vals =results['scores'][0]
                 classes = results['classes'][0]
                 dictionary = dict(zip(classes,vals))
+                prediction = max(dictionary.items(), key=operator.itemgetter(1))[0]
 
                 print('Image path: '+ name+' Crystal: '+str(dictionary[b'Crystals'])+' Other: '+ str(dictionary[b'Other'])+' Precipitate: '+ str(dictionary[b'Precipitate'])+' Clear: '+ str(dictionary[b'Clear']))
-                Writer.writerow(['Image path: '+ name,'Crystal: '+str(dictionary[b'Crystals']),'Other: '+ str(dictionary[b'Other']),'Precipitate: '+ str(dictionary[b'Precipitate']),'Clear: '+ str(dictionary[b'Clear'])])
+                Writer.writerow([name,(str(prediction))[2:-1],str(dictionary[b'Crystals']),str(dictionary[b'Other']),str(dictionary[b'Precipitate']),str(dictionary[b'Clear'])])
